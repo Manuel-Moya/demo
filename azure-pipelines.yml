@@ -90,13 +90,6 @@ stages:
               scriptType: 'bash'
               scriptLocation: 'inlineScript'
               inlineScript: |
-                echo 'hola'
-                echo 'hola'
-                echo 'hola'
-                echo 'hola'
-                echo 'hola'
-                echo 'hola'
-                echo 'hola'
                 curl -L https://aka.ms/acr/installaad/bash | /bin/bash
                 az acr login -n crapmteasyopsspcemeaprod
               addSpnToEnvironment: true
@@ -111,11 +104,26 @@ stages:
 
                 echo 'Start Build'
 
-
                 cd service
                 mvn compile jib:build 
 
                 echo 'Build complete'
+
+          - task: replacetokens@3
+            displayName: Replace IMAGE_TAG in the manifest file
+            inputs:
+              targetFiles: 'kubernetes/*.yaml'
+              tokenPrefix: '${'
+              tokenSuffix: '}'
+
+          - task: KubernetesManifest@0
+            displayName: Deploy to Kubernetes cluster
+            inputs:
+              kubernetesServiceConnection: SharedAKSCoreProdWest-1
+              namespace: easyops
+              action: deploy
+              manifests: kubernetes/deploy.yaml
+
 
 
 
