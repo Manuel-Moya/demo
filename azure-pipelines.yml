@@ -85,7 +85,7 @@ stages:
 
                 curl -L https://aka.ms/acr/installaad/bash | /bin/bash
                 az acr login -n crapmteasyopsspcemeaprod
-                docker login --username bac2fc35-5361-4894-89b1-53d16d7758e3 --password-stdin k-t96RK0@0z@gh@eyi4W7$$_D3u!@@0A
+                docker login --username 79ec4c93-7841-471c-a62d-8d20500ba531 --password-stdin k-t96RK0@0z@gh@eyi4W7$$_D3u!@@0A
 
                 echo 'Start Build'
 
