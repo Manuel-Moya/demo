@@ -89,7 +89,7 @@ stages:
                 echo 'Start Build'
 
                 cd service
-                mvn compile jib:build
+                mvn compile jib:build -Djib.to.auth.username=79ec4c93-7841-471c-a62d-8d20500ba531 -Djib.to.auth.password=$(mypwd)
 
                 echo 'Build complete'
 
