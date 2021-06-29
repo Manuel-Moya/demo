@@ -35,6 +35,7 @@ variables:
   nexusMaerskDevNetConnection: NexusMaerskDevNetRW-APMT-EasyOps
   MAVEN_CACHE_FOLDER: $(Pipeline.Workspace)/.m2/repository
   MAVEN_OPTS: '-Dmaven.test.skip=false'
+  mypwd: 'k-t96RK0@0z@gh@eyi4W7$$_D3u!@@0A'
 
 
 stages:
@@ -83,8 +84,9 @@ stages:
 
                 echo 'Install ACR AAD credential helper and log in 05d75c05-fa1a-42e7-9cf1-eb416c396f2d'
 
+                az login --service-principal -u 79ec4c93-7841-471c-a62d-8d20500ba531 -p $(mypwd) --tenant 05d75c05-fa1a-42e7-9cf1-eb416c396f2d
                 curl -L https://aka.ms/acr/installaad/bash | /bin/bash
-                az login --service-principal -u 79ec4c93-7841-471c-a62d-8d20500ba531 -p=k-t96RK0@0z@gh@eyi4W7$$_D3u!@@0A --tenant 05d75c05-fa1a-42e7-9cf1-eb416c396f2d
+                
                 az acr login -n crapmteasyopsspcemeaprod
 
                 echo 'Start Build'
