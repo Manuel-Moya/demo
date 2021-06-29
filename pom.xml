@@ -48,6 +48,24 @@
                     </excludes>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>2.5.2</version>
+                <configuration>
+                    <from>
+                        <image>mcr.microsoft.com/java/jdk:11-zulu-alpine</image>
+                    </from>
+                    <to>
+                        <image>${CONTAINER_REGISTRY}/easyops-demo:${IMAGE_TAG}</image>
+                    </to>
+                    <container>
+                        <ports>
+                            <port>8080</port>
+                        </ports>
+                    </container>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 

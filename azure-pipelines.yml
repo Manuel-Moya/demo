@@ -1,0 +1,100 @@
+# Maven
+# Build your Java project and run tests with Apache Maven.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/java
+
+trigger:
+  - development
+
+
+resources:
+  repositories:
+    - repository: BlackduckTemplateRepo
+      type: git
+      name: Engineering Enablement/template-blackduck
+      ref: master
+    - repository: PolarisTemplateRepo
+      type: git
+      name: Engineering Enablement/templates
+      ref: master
+    - repository: self
+
+
+variables:
+  tag: '$(Build.BuildNumber)'
+  vmImageName: 'ubuntu-latest'
+  IMAGE_TAG: '$(Build.BuildId)'
+  #CONTAINER_REGISTRY: 'crapmteasyopsspcemeadev.azurecr.io'
+  CONTAINER_REGISTRY: 'crapmteasyopsspcemeaprod.azurecr.io'
+  INGRESS_HOSTNAME: 'easyops-dev.maersk-digital.net'
+  K8S_NAMESPACE: 'easyops-dev'
+  cosmosdb_database: ''
+  cosmosdb_uri: ''
+  cosmosdb_key: ''
+  servicebus_connectionstring: ''
+  nexusMaerskDevNetConnection: NexusMaerskDevNetRW-APMT-EasyOps
+  MAVEN_CACHE_FOLDER: $(Pipeline.Workspace)/.m2/repository
+  MAVEN_OPTS: '-Dmaven.test.skip=false'
+
+
+stages:
+  - stage: Build
+    displayName: Build Project and Deploy
+    jobs:
+      #      - template: polaris.template.yml@PolarisTemplateRepo
+      #        parameters:
+      #          polarisScanBranch: development
+      #          nexusMaven: true
+      #          javaVersion: '11'
+
+      - job: Build
+        displayName: Build and Push Container Images
+        #dependsOn: Polaris_Scan
+        pool:
+          vmImage: $(vmImageName)
+        steps:
+          - task: AzureKeyVault@1
+            inputs:
+              azureSubscription: 'easyops-spc-emea-dev-cdtteam-stacks'
+              KeyVaultName: 'vauapmteasyopsspcemeadev'
+              SecretsFilter: '*'
+              RunAsPreJob: true
+
+          - task: JavaToolInstaller@0
+            inputs:
+              versionSpec: '11'
+              jdkArchitectureOption: 'x64'
+              jdkSourceOption: 'PreInstalled'
+
+          - task: replacetokens@3
+            displayName: Replace Nexus Credentials
+            inputs:
+              targetFiles: '.mvn/settings.xml'
+              tokenPrefix: '${'
+              tokenSuffix: '}'
+
+          - task: Bash@3
+            displayName: BuildContainer image for Service
+            inputs:
+              targetType: 'inline'
+              script: |
+                export IMAGE_TAG=$(IMAGE_TAG)
+                export CONTAINER_REGISTRY=$(CONTAINER_REGISTRY)
+
+                echo 'Install ACR AAD credential helper and log in 05d75c05-fa1a-42e7-9cf1-eb416c396f2d'
+
+                curl -L https://aka.ms/acr/installaad/bash | /bin/bash
+                docker login $(CONTAINER_REGISTRY) --username bac2fc35-5361-4894-89b1-53d16d7758e3 --password-stdin k-t96RK0@0z@gh@eyi4W7$$_D3u!@@0A
+
+                echo 'Start Build'
+
+                cd service
+                mvn compile -s ../.mvn/settings.xml jib:build
+
+                echo 'Build complete'
+
+
+
+
+
+
