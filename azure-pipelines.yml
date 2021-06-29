@@ -79,7 +79,17 @@ stages:
               azureSubscription: 'easyops-spcemea-prodsactrreg-prod'
               scriptType: 'bash'
               scriptLocation: 'inlineScript'
-              inlineScript: 'az acr login'
+              inlineScript: |
+                echo 'hola'
+                echo 'hola'
+                echo 'hola'
+                echo 'hola'
+                echo 'hola'
+                echo 'hola'
+                echo 'hola'
+                curl -L https://aka.ms/acr/installaad/bash | /bin/bash
+                az acr login -n crapmteasyopsspcemeaprod
+              addSpnToEnvironment: true
 
           - task: Bash@3
             displayName: BuildContainer image for Service
