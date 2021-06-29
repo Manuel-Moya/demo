@@ -77,7 +77,7 @@ stages:
           - task: AzureCLI@2
             inputs:
               azureSubscription: 'easyops-spcemea-prodsactrreg-prod'
-              scriptType: 'batch'
+              scriptType: 'bash'
               scriptLocation: 'inlineScript'
               inlineScript: 'az acr login'
 
@@ -90,6 +90,7 @@ stages:
                 export CONTAINER_REGISTRY=$(CONTAINER_REGISTRY)
 
                 echo 'Start Build'
+
 
                 cd service
                 mvn compile jib:build 
