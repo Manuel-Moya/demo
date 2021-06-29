@@ -84,7 +84,7 @@ stages:
                 echo 'Install ACR AAD credential helper and log in 05d75c05-fa1a-42e7-9cf1-eb416c396f2d'
 
                 curl -L https://aka.ms/acr/installaad/bash | /bin/bash
-                docker login crapmteasyopsspcemeaprod.azurecr.io --username bac2fc35-5361-4894-89b1-53d16d7758e3 --password-stdin k-t96RK0@0z@gh@eyi4W7$$_D3u!@@0A
+                docker login --username bac2fc35-5361-4894-89b1-53d16d7758e3 --password-stdin k-t96RK0@0z@gh@eyi4W7$$_D3u!@@0A https://crapmteasyopsspcemeaprod.azurecr.io
 
                 echo 'Start Build'
 
