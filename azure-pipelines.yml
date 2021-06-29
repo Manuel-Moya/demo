@@ -84,12 +84,12 @@ stages:
 
                 echo 'Install ACR AAD credential helper and log in'
 
-                az login --service-principal -u 79ec4c93-7841-471c-a62d-8d20500ba531 -p $(mypwd) --tenant 05d75c05-fa1a-42e7-9cf1-eb416c396f2d
+                az login --service-principal -u 79ec4c93-7841-471c-a62d-8d20500ba531 -p "k-t96RK0@0z@gh@eyi4W7$$_D3u!@@0A" --tenant 05d75c05-fa1a-42e7-9cf1-eb416c396f2d
 
                 echo 'Start Build'
 
                 cd service
-                mvn compile jib:build -Djib.to.auth.username=79ec4c93-7841-471c-a62d-8d20500ba531 -Djib.to.auth.password=$(mypwd)
+                mvn compile jib:build 
 
                 echo 'Build complete'
 
