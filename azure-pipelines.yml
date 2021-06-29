@@ -89,7 +89,7 @@ stages:
                 echo 'Start Build'
 
                 cd service
-                mvn compile -s ../.mvn/settings.xml jib:build
+                mvn compile jib:build
 
                 echo 'Build complete'
 
